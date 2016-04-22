@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace GradleBuildWeb.Models
 {
-    
-    public class BuildingProcess: Process,IEquatable<BuildingProcess>
+    class CleaningProcess : Process, IEquatable<CleaningProcess>
     {
-        
-        public BuildingProcess(string srcDirectory)
+
+        public CleaningProcess(string srcDirectory)
         {
             EnableRaisingEvents = true;
             StartInfo = new ProcessStartInfo
@@ -17,20 +20,20 @@ namespace GradleBuildWeb.Models
                 UseShellExecute = false,
                 RedirectStandardInput = true,
             };
-            
+
         }
 
         public new bool Start()
         {
-            var result =base.Start();
+            var result = base.Start();
 
-            StandardInput.WriteLine(@"gradlew.bat assembleDebug");
+            StandardInput.WriteLine(@"gradlew.bat clean");
             StandardInput.WriteLine("exit");
 
             return result;
         }
-        //for next releases 
-        public bool Equals(BuildingProcess other)
+        //for nxt releases with threading and single job project
+        public bool Equals(CleaningProcess other)
         {
             return StartInfo.WorkingDirectory.Equals(other.StartInfo.WorkingDirectory);
         }

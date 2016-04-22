@@ -1,3 +1,41 @@
 ﻿
+<header>
+    <script src="~/Scripts/jquery-2.2.3.js"></script>
+</header>
+<h2>welcome to my build sample</h2>
 
-<h2>title</h2>
+<body>
+    <input type="button" id="build" title="build" value="build" />
+<input type="button" id="clean" title="build" value="clean"/>
+    <input type="button" id="serverStatus" title="build" value="Server Status" />
+</body>
+<script>
+    $('#build').click(function () {
+        $.ajax({
+            method: "POST",
+            url: '@Url.Action("Build")'
+
+        })
+        .done(function (msg) {
+            alert(msg);
+         });
+    });
+    $('#clean').click(function () {
+        $.ajax({
+            method: "POST",
+            url: '@Url.Action("Clean")'
+        })
+        .done(function (msg) {
+            alert(msg);
+        });
+    });
+    $('#serverStatus').click(function () {
+        $.ajax({
+            method: "POST",
+            url: '@Url.Action("ServerStatus")'
+        })
+        .done(function (msg) {
+            alert(msg);
+        });
+    });
+</script>
