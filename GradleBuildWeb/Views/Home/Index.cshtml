@@ -1,40 +1,72 @@
-﻿
+﻿@{
+    Layout = "../Shared/_Layout.cshtml";
+}
 <header>
     <script src="~/Scripts/jquery-2.2.3.js"></script>
 </header>
 <h2>welcome to my build sample</h2>
 
-<body>
-    <input type="button" id="build" title="build" value="build" />
-<input type="button" id="clean" title="build" value="clean"/>
-    <input type="button" id="serverStatus" title="build" value="Server Status" />
-</body>
+
+    <div style="margin:3em;">
+        <button type="button" class="btn btn-primary btn-lg " id="build" value="build" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing">build</button>
+        <button type="button" class="btn btn-primary btn-lg " id="clean" value="clean" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing">clean</button>
+        <button type="button" class="btn btn-primary btn-lg " id="download" value="download" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing">download</button>
+        <button type="button" class="btn btn-primary btn-lg " id="serverStatus" value="serverStatus" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing">Server Status</button>
+    </div>
+
 <script>
     $('#build').click(function () {
+        var $this = $(this);
+        $this.button('loading');
         $.ajax({
             method: "POST",
             url: '@Url.Action("Build")'
 
         })
         .done(function (msg) {
+            $this.button('reset');
             alert(msg);
-         });
+        });
     });
     $('#clean').click(function () {
+        var $this = $(this);
+        $this.button('loading');
         $.ajax({
             method: "POST",
             url: '@Url.Action("Clean")'
         })
-        .done(function (msg) {
-            alert(msg);
+            .done(function (msg) {
+                $this.button('reset');
+                alert(msg);
+            });
+    });
+
+    $('#download').click(function () {
+        var $this = $(this);
+        $this.button('loading');
+        $.ajax({
+            url: '@Url.Action("Download")',
+            contentType: 'application/json; charset=utf-8',
+            datatype: 'json',
+            data: {
+                zaPath: "lol"
+            },
+            type: "GET",
+            success: function () {
+                $this.button('reset');
+                window.location = '@Url.Action("Download")';
+            }
         });
     });
     $('#serverStatus').click(function () {
+        var $this = $(this);
+        $this.button('loading');
         $.ajax({
             method: "POST",
             url: '@Url.Action("ServerStatus")'
         })
         .done(function (msg) {
+            $this.button('reset');
             alert(msg);
         });
     });
