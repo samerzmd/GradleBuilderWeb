@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace GradleBuildWeb.Models
 {
-    public class GradleConfiguration
+    public class Configuration
     {
+        public string MainOprationName;
         public string Path;
         public string BuildCommand;
     }

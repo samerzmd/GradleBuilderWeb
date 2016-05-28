@@ -11,6 +11,7 @@
         <button type="button" class="btn btn-primary btn-lg " id="build" value="build" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing">build</button>
         <button type="button" class="btn btn-primary btn-lg " id="clean" value="clean" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing">clean</button>
         <button type="button" class="btn btn-primary btn-lg " id="download" value="download" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing">download</button>
+        <button type="button" class="btn btn-primary btn-lg " id="GitLatest" value="GitLatest" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing">pull Latest code from VCS</button>
         <button type="button" class="btn btn-primary btn-lg " id="serverStatus" value="serverStatus" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing">Server Status</button>
     </div>
 
@@ -58,6 +59,20 @@
             }
         });
     });
+
+    $('#GitLatest').click(function () {
+        var $this = $(this);
+        $this.button('loading');
+        $.ajax({
+            method: "POST",
+            url: '@Url.Action("GitLatest")'
+        })
+            .done(function (msg) {
+                $this.button('reset');
+                alert(msg);
+            });
+    });
+
     $('#serverStatus').click(function () {
         var $this = $(this);
         $this.button('loading');

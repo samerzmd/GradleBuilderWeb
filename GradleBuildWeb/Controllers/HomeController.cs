@@ -13,16 +13,18 @@ namespace GradleBuildWeb.Controllers
 
         private static bool _isBuilding;
         private static bool _isCleaning;
+        private bool _isPulling;
 
         private string ProjectPath = @"C:\Projects\TheApplication";
         private string apkPath = @"\app\build\outputs\apk\app-debug.apk";
+        
         // GET: Home
         public ActionResult Index()
         {
             return View();
         }
 
-        private static string StartServerProcess(GradleConfiguration configuration)
+        private static string StartServerProcess(Configuration configuration)
         {
             string path = @"c:\GradleServerConfig.txt";
             string json = JsonConvert.SerializeObject(configuration);
@@ -48,7 +50,10 @@ namespace GradleBuildWeb.Controllers
 
         private string ServerCurrentStatus()
         {
-            return _isCleaning ? "server is busy with cleaning process" : (_isBuilding ? "it's building" : string.Empty);
+            if (_isCleaning) return "server is busy with cleaning process";
+            else if (_isBuilding) return "it's building";
+            else if (_isPulling) return "server is busy getting latest CODE";
+            else return string.Empty;
         }
 
         public ActionResult Build()
@@ -60,7 +65,7 @@ namespace GradleBuildWeb.Controllers
             }
 
             _isBuilding = true;
-            StartServerProcess(new GradleConfiguration { BuildCommand = "build", Path = "C:\\Projects\\TheApplication" });
+            StartServerProcess(new Configuration { BuildCommand = "build", Path = "C:\\Projects\\TheApplication", MainOprationName = "Gradle" });
             _isBuilding = false;
             return Json("building has just Finsihed");
         }
@@ -74,9 +79,23 @@ namespace GradleBuildWeb.Controllers
             }
 
             _isCleaning = true;
-            StartServerProcess(new GradleConfiguration { BuildCommand = "clean", Path = "C:\\Projects\\TheApplication" });
+            StartServerProcess(new Configuration { BuildCommand = "clean", Path = "C:\\Projects\\TheApplication", MainOprationName = "Gradle" });
             _isCleaning = false;
             return Json("cleaning has just finished");
+        }
+
+        public ActionResult GitLatest()
+        {
+            var status = ServerCurrentStatus();
+            if (!status.Equals(string.Empty))
+            {
+                return Json(status);
+            }
+
+            _isPulling = true;
+            StartServerProcess(new Configuration { BuildCommand = "clean", Path = "C:\\Projects\\TheApplication", MainOprationName = "Git" });
+            _isPulling = false;
+            return Json("we have the latest code, comrade general");
         }
 
         public ActionResult ServerStatus()
