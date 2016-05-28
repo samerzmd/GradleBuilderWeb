@@ -5,12 +5,20 @@ this is just a "reinventing the wheel" and a far from [Jenkins](https://jenkins.
 
 it's a CI tool that i was having fun developing it XD.
 
-Current Features :
-
+Current Features
+-------
 1-gradle build process for android projects.
+
 2-gradle clean process for android projects.
+
 3-give the ability to download the latest debug version of android project.
+
 4-pull a git project codes.
+
+
+The Main Worker 
+-------
+[GradleBuildConsole](https://github.com/samerzmd/GradleBuildConsole)
 
 
 License
